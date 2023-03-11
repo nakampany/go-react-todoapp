@@ -44,7 +44,7 @@ func main() {
 
 	})
 
-	app.Patch("api/todos/:id", func(c *fiber.Ctx) error {
+	app.Patch("api/todos/:id/done", func(c *fiber.Ctx) error {
 		id, err := c.ParamsInt("id")
 
 		if err!= nil {

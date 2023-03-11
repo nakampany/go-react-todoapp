@@ -2,8 +2,11 @@ import React from "react";
 import {useState} from "react";
 import { useForm } from '@mantine/form';
 import {Button, Group, Modal, TextInput, Textarea} from "@mantine/core";
+import { KeyedMutator } from "swr";
+import { ENDPOINT, Todo } from "../App";
 
-const AddTodo = () => {
+
+const AddTodo = ({mutate}: {mutate: KeyedMutator<Todo[]>}) => {
 
     const [open, setOpen] = useState(false);
     const form = useForm({
@@ -13,9 +16,19 @@ const AddTodo = () => {
         },
     });
 
-    function createTodo() {
+    async function createTodo(value: string, body: string) {
+        const update = await fetch(`${ENDPOINT}/api/todos`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(value)}).then((res) => res.json());
+        mutate(update);
+        form.reset();
+        setOpen(false);
 
-    }
+        };
+        
 
     return (
 
